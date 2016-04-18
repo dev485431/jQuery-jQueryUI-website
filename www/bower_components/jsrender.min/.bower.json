@@ -1,0 +1,13 @@
+{
+  "name": "jsrender.min",
+  "_cacheHeaders": {
+    "Last-Modified": "Sun, 03 Apr 2016 22:05:25 GMT",
+    "Content-Length": "9030",
+    "Content-Type": "application/javascript; charset=utf-8"
+  },
+  "main": "index.js",
+  "_source": "https://www.jsviews.com/download/jsrender.min.js",
+  "_target": "*",
+  "_originalSource": "https://www.jsviews.com/download/jsrender.min.js",
+  "_direct": true
+}
