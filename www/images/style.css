@@ -301,3 +301,4 @@ input.text:hover { border: 1px solid #FFFFFF; background: #EEEEEE; color: #00000
 input.button { margin: 0; padding: 0 0 0 3px; font-size: 100%; font-family: Arial, Sans-Serif; border: none; background: none; color: #FFF; background: #808080; font-weight: bold; }
 .date { margin: 5px 0 5px 0; padding: 10px 5px 5px 0; background: #FFFFFF url(horizontaldotted.gif) repeat-x bottom left; color: #808080; text-align: right; }
 .date a { color: #808080; background: #FFFFFF; }
+
