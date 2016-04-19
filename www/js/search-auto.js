@@ -1,9 +1,14 @@
 $(function () {
-    var autoCompleteUrl = "mocks/search.json.php",
-        apiVariable = 'titles';
+    var searchTerm = $("#search_term"),
+        searchForm = $("#search_form"),
+
+        autoCompleteUrl = 'mocks/search.json.php',
+        apiVariable = 'titles',
+        ajaxTimeout = 10000,
+        errInputCallback = 'Please try again later';
 
 
-    $("#search_term").autocomplete({
+    searchTerm.autocomplete({
 
         source: function (request, response) {
             var term = request.term.toLowerCase(),
@@ -15,11 +20,15 @@ $(function () {
                     url: autoCompleteUrl,
                     dataType: "json",
                     data: request,
+                    timeout: ajaxTimeout,
                     success: function (data) {
                         cache = data[apiVariable];
                         element.data('autocompleteCache', cache);
                         console.log("Doing ajax call for cache");
                         response(search(cache, term));
+                    },
+                    error: function () {
+                        searchTerm.attr('disabled', 'disabled').val(errInputCallback).addClass('ui-state-disabled');
                     }
                 });
             } else {
@@ -28,8 +37,8 @@ $(function () {
         },
 
         select: function (event, ui) {
-            $("#search_term").val(ui.item.label);
-            $("#search_form").submit();
+            searchTerm.val(ui.item.label);
+            searchForm.submit();
         }
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
