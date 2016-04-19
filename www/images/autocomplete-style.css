@@ -25,6 +25,10 @@
     background-clip: padding-box;
     *border-right-width: 2px;
     *border-bottom-width: 2px;
+
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .ui-menu-item {
