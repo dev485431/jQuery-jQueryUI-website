@@ -9,7 +9,9 @@ $("#search_term").one("focus", function () {
         acCacheName = "autoCompleteCache",
         classUIAutoComplete = "ui-autocomplete",
         classUIAutoCompleteItem = "ui-autocomplete-item",
-        classUIAutoCompleteLoad = "ui-autocomplete-loading";
+        classUIAutoCompleteLoad = "ui-autocomplete-loading",
+        noResultsId = "#no-result",
+        noResultsMsg = "No results found";
 
     searchTerm.autocomplete({
 
@@ -33,6 +35,15 @@ $("#search_term").one("focus", function () {
         select: function (event, ui) {
             searchTerm.val(ui.item.label);
             searchForm.submit();
+        },
+
+        response: function (event, ui) {
+            var noResults = $(noResultsId);
+            if (ui.content.length === 0) {
+                noResults.text(noResultsMsg);
+            } else {
+                noResults.empty();
+            }
         }
 
     }).data(classUIAutoComplete)._renderItem = function (ul, item) {

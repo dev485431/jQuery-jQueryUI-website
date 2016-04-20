@@ -64,3 +64,10 @@
     background: #bdbbbb;
 }
 
+.ui-helper-hidden-accessible {
+    display: none;
+}
+
+#no-result {
+    text-align: right;
+}
