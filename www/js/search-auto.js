@@ -1,13 +1,14 @@
 $("#search_term").on("focus", function () {
-    // probably move all cached dom elements to the 1st script file
+
     var searchTerm = $("#search_term"),
         searchForm = $("#search_form"),
 
-        autoCompleteUrl = 'mocks/search.json.php',
-        apiVariable = 'titles',
-        acCacheName = 'autocompleteCache',
+        apiUrl = "mocks/search.json.php",
+        apiVariable = "titles",
         ajaxTimeout = 10000,
-        errInputMessage = 'Please try again later';
+        acCacheName = "autoCompleteCache",
+        classUIAutoComplete = "ui-autocomplete",
+        classUIAutoCompleteItem = "ui-autocomplete-item";
 
 
     searchTerm.autocomplete({
@@ -22,7 +23,6 @@ $("#search_term").on("focus", function () {
                     .done(function (data) {
                         cache = data[apiVariable];
                         element.data(acCacheName, cache);
-                        console.log("Doing ajax call for cache");
                         response(searchCache(cache, term));
                     });
             } else {
@@ -35,9 +35,9 @@ $("#search_term").on("focus", function () {
             searchForm.submit();
         }
 
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+    }).data(classUIAutoComplete)._renderItem = function (ul, item) {
         return $("<li>")
-            .data("ui-autocomplete-item", item)
+            .data(classUIAutoCompleteItem, item)
             .append("<a>" + item.label + "</a>")
             .appendTo(ul);
     };
@@ -45,7 +45,6 @@ $("#search_term").on("focus", function () {
     function searchCache(cache, term) {
         var results = [];
         $.each(cache, function (i, val) {
-            console.log("Cache search loop");
             if (val.toLowerCase().indexOf(term) !== -1) {
                 results.push(val);
             }
@@ -55,7 +54,7 @@ $("#search_term").on("focus", function () {
 
     function getAutoCompleteData(request) {
         return $.ajax({
-            url: autoCompleteUrl,
+            url: apiUrl,
             dataType: "json",
             data: request,
             timeout: ajaxTimeout
