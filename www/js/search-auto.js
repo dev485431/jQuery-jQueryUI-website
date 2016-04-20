@@ -1,32 +1,41 @@
-$("#search_term").on("focus", function () {
+$("#search_term").one("focus", function () {
 
     var searchTerm = $("#search_term"),
         searchForm = $("#search_form"),
 
         apiUrl = "mocks/search.json.php",
         apiVariable = "titles",
-        ajaxTimeout = 10000,
-        acCacheName = "autoCompleteCache",
+        ajaxTimeoutMs = 10000,
+        acCookieName = "autoCompleteCookie",
+        acCookieExpireMin = 1,
+        acCookieExpireMultiplier = 60000,
         classUIAutoComplete = "ui-autocomplete",
-        classUIAutoCompleteItem = "ui-autocomplete-item";
+        classUIAutoCompleteItem = "ui-autocomplete-item",
+        classUIAutoCompleteLoad = "ui-autocomplete-loading";
 
+    // Cookies.remove(acCookieName);
 
     searchTerm.autocomplete({
 
         source: function (request, response) {
             var term = request.term.toLowerCase(),
-                element = this.element,
-                cache = this.element.data(acCacheName) || [];
+                acCookieValue = Cookies.get(acCookieName);
 
-            if (cache.length === 0) {
+            if (acCookieValue) {
+                // console.log("Cookie exists");
+                response(searchCache($.parseJSON(acCookieValue), term));
+            } else {
                 getAutoCompleteData(request)
                     .done(function (data) {
-                        cache = data[apiVariable];
-                        element.data(acCacheName, cache);
-                        response(searchCache(cache, term));
-                    });
-            } else {
-                response(searchCache(cache, term));
+                        // console.log("Downloading cookie content");
+                        var apiData = data[apiVariable],
+                            acCookieExpiration = new Date(Date.now() + acCookieExpireMin * acCookieExpireMultiplier);
+                        // console.log("Current date: " + Date.now() + " Expires: " + acCookieExpiration);
+                        Cookies.set(acCookieName, apiData, acCookieExpiration);
+                        response(searchCache(apiData, term));
+                    }).fail(function () {
+                    searchTerm.removeClass(classUIAutoCompleteLoad);
+                });
             }
         },
 
@@ -57,7 +66,7 @@ $("#search_term").on("focus", function () {
             url: apiUrl,
             dataType: "json",
             data: request,
-            timeout: ajaxTimeout
+            timeout: ajaxTimeoutMs
         });
     }
 });
