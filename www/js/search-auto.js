@@ -2,7 +2,6 @@ $("#search_term").on("focus", function () {
     // probably move all cached dom elements to the 1st script file
     var searchTerm = $("#search_term"),
         searchForm = $("#search_form"),
-        searchButton = $("#search_button"),
 
         autoCompleteUrl = 'mocks/search.json.php',
         apiVariable = 'titles',
@@ -25,10 +24,6 @@ $("#search_term").on("focus", function () {
                         element.data(acCacheName, cache);
                         console.log("Doing ajax call for cache");
                         response(searchCache(cache, term));
-                    })
-                    .error(function () {
-                        searchTerm.prop('disabled', true).val(errInputMessage).addClass('ui-state-disabled');
-                        searchButton.prop('disabled', true);
                     });
             } else {
                 response(searchCache(cache, term));
