@@ -6,36 +6,27 @@ $("#search_term").one("focus", function () {
         apiUrl = "mocks/search.json.php",
         apiVariable = "titles",
         ajaxTimeoutMs = 10000,
-        acCookieName = "autoCompleteCookie",
-        acCookieExpireMin = 1,
-        acCookieExpireMultiplier = 60000,
+        acCacheName = "autoCompleteCache",
         classUIAutoComplete = "ui-autocomplete",
         classUIAutoCompleteItem = "ui-autocomplete-item",
         classUIAutoCompleteLoad = "ui-autocomplete-loading";
 
-    // Cookies.remove(acCookieName);
-
     searchTerm.autocomplete({
 
         source: function (request, response) {
-            var term = request.term.toLowerCase(),
-                acCookieValue = Cookies.get(acCookieName);
+            var term = request.term.toLowerCase();
 
-            if (acCookieValue) {
-                // console.log("Cookie exists");
-                response(searchCache($.parseJSON(acCookieValue), term));
-            } else {
+            if ($.sessionStorage.isEmpty(acCacheName)) {
                 getAutoCompleteData(request)
                     .done(function (data) {
-                        // console.log("Downloading cookie content");
-                        var apiData = data[apiVariable],
-                            acCookieExpiration = new Date(Date.now() + acCookieExpireMin * acCookieExpireMultiplier);
-                        // console.log("Current date: " + Date.now() + " Expires: " + acCookieExpiration);
-                        Cookies.set(acCookieName, apiData, acCookieExpiration);
+                        var apiData = data[apiVariable];
+                        $.sessionStorage.set(acCacheName, apiData);
                         response(searchCache(apiData, term));
                     }).fail(function () {
                     searchTerm.removeClass(classUIAutoCompleteLoad);
                 });
+            } else {
+                response(searchCache($.sessionStorage.get(acCacheName), term));
             }
         },
 
