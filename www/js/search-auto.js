@@ -1,17 +1,17 @@
-$("#search_term").one("focus", function () {
+$('#search_term').one('focus', function () {
 
-    var searchTerm = $("#search_term"),
-        searchForm = $("#search_form"),
+    var searchTerm = $('#search_term'),
+        searchForm = $('#search_form'),
 
-        apiUrl = "mocks/search.json.php",
-        apiVariable = "titles",
+        apiUrl = 'mocks/search.json.php',
+        apiVariable = 'titles',
         ajaxTimeoutMs = 10000,
-        acCacheName = "autoCompleteCache",
-        classUIAutoComplete = "ui-autocomplete",
-        classUIAutoCompleteItem = "ui-autocomplete-item",
-        classUIAutoCompleteLoad = "ui-autocomplete-loading",
-        noResultsId = "#no-result",
-        noResultsMsg = "No results found";
+        acCacheName = 'autoCompleteCache',
+        classUIAutoComplete = 'ui-autocomplete',
+        classUIAutoCompleteItem = 'ui-autocomplete-item',
+        classUIAutoCompleteLoad = 'ui-autocomplete-loading',
+        noResultsId = '#no-result',
+        noResultsMsg = 'No results found';
 
     searchTerm.autocomplete({
 
@@ -47,9 +47,9 @@ $("#search_term").one("focus", function () {
         }
 
     }).data(classUIAutoComplete)._renderItem = function (ul, item) {
-        return $("<li>")
+        return $('<li>')
             .data(classUIAutoCompleteItem, item)
-            .append("<a>" + item.label + "</a>")
+            .append('<a>' + item.label + '</a>')
             .appendTo(ul);
     };
 
@@ -66,7 +66,7 @@ $("#search_term").one("focus", function () {
     function getAutoCompleteData(request) {
         return $.ajax({
             url: apiUrl,
-            dataType: "json",
+            dataType: 'json',
             data: request,
             timeout: ajaxTimeoutMs
         });
