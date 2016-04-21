@@ -6,7 +6,7 @@
     <meta name="Description" content="Internet Jobs"/>
     <link rel="stylesheet" type="text/css" href="images/style.css"/>
     <link rel="stylesheet" type="text/css" href="bower_components/jquery-ui/themes/base/jquery-ui.min.css">
-    <link rel="stylesheet" type="text/css" href="images/autocomplete-style.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="images/autocomplete-style.css"/>-->
 
     <title>Internet News</title>
 
@@ -105,10 +105,13 @@
                         <input name="search" class="button" id="search_button" value="Search" type="submit"/>
                     </p>
                 </form>
-                <div id="no-result"></div>
+                <div id="no-search-result"></div>
             </div>
 
             <div id="rightmenu">
+                <div id="menu-loader" class="hidden centered">
+                    <img src='images/ajax-loader-small.gif'/>
+                </div>
                 <div id="navaccordion">
                 </div>
             </div>

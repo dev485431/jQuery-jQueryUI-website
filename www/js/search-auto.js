@@ -7,10 +7,10 @@ $('#search_term').one('focus', function () {
         apiVariable = 'titles',
         ajaxTimeoutMs = 10000,
         acCacheName = 'autoCompleteCache',
-        classUIAutoComplete = 'ui-autocomplete',
-        classUIAutoCompleteItem = 'ui-autocomplete-item',
-        classUIAutoCompleteLoad = 'ui-autocomplete-loading',
-        noResultsId = '#no-result',
+        cssUIAutoComplete = 'ui-autocomplete',
+        cssUIAutoCompleteItem = 'ui-autocomplete-item',
+        cssUIAutoCompleteLoad = 'ui-autocomplete-loading',
+        noResultsId = '#no-search-result',
         noResultsMsg = 'No results found';
 
     searchTerm.autocomplete({
@@ -25,7 +25,7 @@ $('#search_term').one('focus', function () {
                         $.sessionStorage.set(acCacheName, apiData);
                         response(searchCache(apiData, term));
                     }).fail(function () {
-                    searchTerm.removeClass(classUIAutoCompleteLoad);
+                    searchTerm.removeClass(cssUIAutoCompleteLoad);
                 });
             } else {
                 response(searchCache($.sessionStorage.get(acCacheName), term));
@@ -46,9 +46,9 @@ $('#search_term').one('focus', function () {
             }
         }
 
-    }).data(classUIAutoComplete)._renderItem = function (ul, item) {
+    }).data(cssUIAutoComplete)._renderItem = function (ul, item) {
         return $('<li>')
-            .data(classUIAutoCompleteItem, item)
+            .data(cssUIAutoCompleteItem, item)
             .append('<a>' + item.label + '</a>')
             .appendTo(ul);
     };
