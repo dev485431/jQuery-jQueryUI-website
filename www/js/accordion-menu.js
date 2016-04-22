@@ -2,26 +2,31 @@ $(function () {
     var accordionDiv = $('#navaccordion'),
         loaderDiv = $('#menu-loader'),
         menuApiUrl = 'mocks/navigation.json.php',
+        accActiveTab = 'accordionTab',
         accCacheName = 'accordionCache',
         accHeightStyle = 'content',
         defaultTabIndex = 1,
         ajaxTimeoutMs = 10000;
 
     loaderDiv.show();
-    getApiData()
-        .done(function (data) {
-            accordionDiv.append(parseHtml(data));
-            accordionDiv.accordion({
-                active: getAccordionState(),
-                heightStyle: accHeightStyle,
-                activate: function () {
-                    setAccordionState(accordionDiv.accordion("option", "active"));
-                }
+    // if sessionStorage or else ajax
+
+
+    if ($.sessionStorage.isEmpty(accCacheName)) {
+        getApiData()
+            .done(function (data) {
+                $.sessionStorage.set(accCacheName, data);
+                accordionDiv.append(parseHtml(data));
+                activateAccordion();
+            })
+            .always(function () {
+                loaderDiv.hide();
             });
-        })
-        .always(function () {
-            loaderDiv.hide();
-        });
+    } else {
+        accordionDiv.append(parseHtml($.sessionStorage.get(accCacheName)));
+        activateAccordion();
+        loaderDiv.hide();
+    }
 
 
     function getApiData() {
@@ -47,11 +52,21 @@ $(function () {
         return html;
     }
 
-    function getAccordionState() {
-        return $.sessionStorage.isSet(accCacheName) ? $.sessionStorage.get(accCacheName) : defaultTabIndex;
+    function activateAccordion() {
+        accordionDiv.accordion({
+            active: getActiveTab(),
+            heightStyle: accHeightStyle,
+            activate: function () {
+                setActiveTab(accordionDiv.accordion("option", "active"));
+            }
+        });
     }
 
-    function setAccordionState(tabId) {
-        $.sessionStorage.set(accCacheName, tabId);
+    function getActiveTab() {
+        return $.sessionStorage.isSet(accActiveTab) ? $.sessionStorage.get(accActiveTab) : defaultTabIndex;
+    }
+
+    function setActiveTab(tabId) {
+        $.sessionStorage.set(accActiveTab, tabId);
     }
 });
