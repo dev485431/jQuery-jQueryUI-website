@@ -11,6 +11,7 @@ AccordionMenu.prototype = function () {
         accHeightStyle = 'content',
         defaultTabIndex = 1,
         ajaxTimeoutMs = 10000,
+        template = $.templates('#tempNav'),
 
         init = function () {
             loaderDiv.show();
@@ -18,14 +19,18 @@ AccordionMenu.prototype = function () {
                 getApiData()
                     .done(function (data) {
                         $.sessionStorage.set(accCacheName, data);
-                        accordionDiv.append(parseHtml(data));
+                        accordionDiv.append(template.render({
+                            menuItems: data
+                        }));
                         activateAccordion();
                     })
                     .always(function () {
                         loaderDiv.hide();
                     });
             } else {
-                accordionDiv.append(parseHtml($.sessionStorage.get(accCacheName)));
+                accordionDiv.append(template.render({
+                    menuItems: $.sessionStorage.get(accCacheName)
+                }));
                 activateAccordion();
                 loaderDiv.hide();
             }
