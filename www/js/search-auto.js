@@ -1,4 +1,7 @@
-$('#search_term').one('focus', function () {
+var SearchAutoComplete = function () {
+}
+
+SearchAutoComplete.prototype = function () {
 
     var searchTerm = $('#search_term'),
         searchForm = $('#search_form'),
@@ -11,67 +14,74 @@ $('#search_term').one('focus', function () {
         cssUIAutoCompleteItem = 'ui-autocomplete-item',
         cssUIAutoCompleteLoad = 'ui-autocomplete-loading',
         noResultsId = '#no-search-result',
-        noResultsMsg = 'No results found';
+        noResultsMsg = 'No results found',
 
-    searchTerm.autocomplete({
+        init = function () {
+            searchTerm.autocomplete({
 
-        source: function (request, response) {
-            var term = request.term.toLowerCase();
+                source: function (request, response) {
+                    var term = request.term.toLowerCase();
 
-            if ($.sessionStorage.isEmpty(acCacheName)) {
-                getAutoCompleteData(request)
-                    .done(function (data) {
-                        var apiData = data[apiVariable];
-                        $.sessionStorage.set(acCacheName, apiData);
-                        response(searchCache(apiData, term));
-                    }).fail(function () {
-                    searchTerm.removeClass(cssUIAutoCompleteLoad);
-                });
-            } else {
-                response(searchCache($.sessionStorage.get(acCacheName), term));
-            }
+                    if ($.sessionStorage.isEmpty(acCacheName)) {
+                        getAutoCompleteData(request)
+                            .done(function (data) {
+                                var apiData = data[apiVariable];
+                                $.sessionStorage.set(acCacheName, apiData);
+                                response(searchCache(apiData, term));
+                            }).fail(function () {
+                            searchTerm.removeClass(cssUIAutoCompleteLoad);
+                        });
+                    } else {
+                        response(searchCache($.sessionStorage.get(acCacheName), term));
+                    }
+                },
+
+                select: function (event, ui) {
+                    searchTerm.val(ui.item.label);
+                    searchForm.submit();
+                },
+
+                response: function (event, ui) {
+                    var noResults = $(noResultsId);
+                    if (ui.content.length === 0) {
+                        noResults.text(noResultsMsg);
+                    } else {
+                        noResults.empty();
+                    }
+                }
+
+            }).data(cssUIAutoComplete)._renderItem = function (ul, item) {
+                return $('<li>')
+                    .data(cssUIAutoCompleteItem, item)
+                    .append('<a>' + item.label + '</a>')
+                    .appendTo(ul);
+            };
         },
 
-        select: function (event, ui) {
-            searchTerm.val(ui.item.label);
-            searchForm.submit();
+        searchCache = function (cache, term) {
+            var results = [];
+            $.each(cache, function (i, val) {
+                if (val.toLowerCase().indexOf(term) !== -1) {
+                    results.push(val);
+                }
+            });
+            return results;
         },
 
-        response: function (event, ui) {
-            var noResults = $(noResultsId);
-            if (ui.content.length === 0) {
-                noResults.text(noResultsMsg);
-            } else {
-                noResults.empty();
-            }
-        }
+        getAutoCompleteData = function (request) {
+            return $.ajax({
+                url: apiUrl,
+                dataType: 'json',
+                data: request,
+                timeout: ajaxTimeoutMs
+            });
+        };
 
-    }).data(cssUIAutoComplete)._renderItem = function (ul, item) {
-        return $('<li>')
-            .data(cssUIAutoCompleteItem, item)
-            .append('<a>' + item.label + '</a>')
-            .appendTo(ul);
+    return {
+        init: init
     };
 
-    function searchCache(cache, term) {
-        var results = [];
-        $.each(cache, function (i, val) {
-            if (val.toLowerCase().indexOf(term) !== -1) {
-                results.push(val);
-            }
-        });
-        return results;
-    }
-
-    function getAutoCompleteData(request) {
-        return $.ajax({
-            url: apiUrl,
-            dataType: 'json',
-            data: request,
-            timeout: ajaxTimeoutMs
-        });
-    }
-});
+}();
 
 
 
