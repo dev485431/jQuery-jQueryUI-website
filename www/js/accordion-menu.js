@@ -38,7 +38,9 @@ AccordionMenu.prototype = function () {
                         activateAccordion();
                         loaderDiv.hide();
                     }
-                });
+                }).fail(function () {
+                loaderDiv.hide();
+            });
         },
 
         getApiData = function () {
