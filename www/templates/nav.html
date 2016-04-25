@@ -1,8 +1,8 @@
-{{ for menuItems }}
+{{for #data}}
 <h3>{{:title}}</h3>
 <div>
 
-    {{ for subitems }}
+    {{for subitems}}
     <p>
         <a href="{{:url}}">{{:title}}</a></br>
         {{if description}}

@@ -11,29 +11,34 @@ AccordionMenu.prototype = function () {
         accHeightStyle = 'content',
         defaultTabIndex = 1,
         ajaxTimeoutMs = 10000,
-        template = $.templates('#tempNav'),
+        templateFile = 'templates/nav.html',
 
         init = function () {
             loaderDiv.show();
-            if ($.sessionStorage.isEmpty(accCacheName)) {
-                getApiData()
-                    .done(function (data) {
-                        $.sessionStorage.set(accCacheName, data);
-                        accordionDiv.append(template.render({
-                            menuItems: data
-                        }));
+            loadTemplateFromFile(templateFile)
+                .done(function (templateData) {
+                    $.templates({'accordionTemplate': templateData});
+
+                    if ($.sessionStorage.isEmpty(accCacheName)) {
+                        getApiData()
+                            .done(function (apiData) {
+                                $.sessionStorage.set(accCacheName, apiData);
+                                accordionDiv.html(
+                                    $.render.accordionTemplate(apiData)
+                                );
+                                activateAccordion();
+                            })
+                            .always(function () {
+                                loaderDiv.hide();
+                            });
+                    } else {
+                        accordionDiv.html(
+                            $.render.accordionTemplate($.sessionStorage.get(accCacheName))
+                        );
                         activateAccordion();
-                    })
-                    .always(function () {
                         loaderDiv.hide();
-                    });
-            } else {
-                accordionDiv.append(template.render({
-                    menuItems: $.sessionStorage.get(accCacheName)
-                }));
-                activateAccordion();
-                loaderDiv.hide();
-            }
+                    }
+                });
         },
 
         getApiData = function () {
@@ -44,19 +49,12 @@ AccordionMenu.prototype = function () {
             });
         },
 
-        parseHtml = function (data) {
-            var html = '';
-            $.each(data, function () {
-                html += ('<h3>' + this.title + '</h3><div>');
-
-                var subItems = this.subitems;
-                $.each(subItems, function () {
-                    html += '<p><a href="' + this.url + '">' + this.title + '</a></br>';
-                    html += this.description ? this.description + '</p>' : '</p>';
-                });
-                html += '</div>';
+        loadTemplateFromFile = function (path) {
+            return $.ajax({
+                url: path,
+                async: false,
+                dataType: 'text'
             });
-            return html;
         },
 
         activateAccordion = function () {
