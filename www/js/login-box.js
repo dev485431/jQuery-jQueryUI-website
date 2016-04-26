@@ -13,9 +13,13 @@ LoginBox.prototype = function () {
         dialogPosition = {my: "center-50 top+80", at: "center top", of: window},
         textLoggedIn = 'You are logged in as ',
         textRegistered = 'Thanks for the registration. You are logged in as ',
+        regexAlphanumeric = /^[a-z0-9]+$/i,
+        msgInvalidRegex = 'Please enter only letters and numbers',
 
 
         init = function () {
+            addRegexValidMethod();
+
             if (isLoggedIn()) {
                 renderLoginText(loginDiv, textLoggedIn + $.sessionStorage.get(loggedInEmail));
             } else {
@@ -40,11 +44,14 @@ LoginBox.prototype = function () {
                                 flogin: {
                                     required: true,
                                     minlength: 3,
+                                    maxlength: 50,
                                     email: true
                                 },
                                 fpass: {
                                     required: true,
-                                    minlength: 5
+                                    minlength: 5,
+                                    maxlength: 35,
+                                    regex: regexAlphanumeric
                                 }
                             },
                             errorElement: 'div',
@@ -62,15 +69,20 @@ LoginBox.prototype = function () {
                                 femail: {
                                     required: true,
                                     minlength: 3,
+                                    maxlength: 50,
                                     email: true
                                 },
                                 fpassnew: {
                                     required: true,
-                                    minlength: 5
+                                    minlength: 5,
+                                    maxlength: 35,
+                                    regex: regexAlphanumeric
                                 },
                                 fpassnewconf: {
                                     required: true,
                                     minlength: 5,
+                                    maxlength: 35,
+                                    regex: regexAlphanumeric,
                                     equalTo: "#fpassnew"
                                 }
                             },
@@ -80,7 +92,8 @@ LoginBox.prototype = function () {
                                 dialogDiv.dialog('close');
                                 return false;
                             }
-                        });
+                        })
+                        ;
 
                     });
                 });
@@ -119,6 +132,17 @@ LoginBox.prototype = function () {
                         $.render.InlayTemplate({message: message})
                     );
                 });
+        },
+
+        addRegexValidMethod = function () {
+            $.validator.addMethod(
+                "regex",
+                function (value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                },
+                msgInvalidRegex
+            );
         };
 
     return {
