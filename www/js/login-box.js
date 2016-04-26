@@ -15,6 +15,10 @@ LoginBox.prototype = function () {
         textRegistered = 'Thanks for the registration. You are logged in as ',
         regexAlphanumeric = /^[a-z0-9]+$/i,
         msgInvalidRegex = 'Please enter only letters and numbers',
+        loginMin = 3,
+        loginMax = 50,
+        passMin = 5,
+        passMax = 35,
 
 
         init = function () {
@@ -43,14 +47,14 @@ LoginBox.prototype = function () {
                             rules: {
                                 flogin: {
                                     required: true,
-                                    minlength: 3,
-                                    maxlength: 50,
+                                    minlength: loginMin,
+                                    maxlength: loginMax,
                                     email: true
                                 },
                                 fpass: {
                                     required: true,
-                                    minlength: 5,
-                                    maxlength: 35,
+                                    minlength: passMin,
+                                    maxlength: passMax,
                                     regex: regexAlphanumeric
                                 }
                             },
@@ -68,20 +72,20 @@ LoginBox.prototype = function () {
                             rules: {
                                 femail: {
                                     required: true,
-                                    minlength: 3,
-                                    maxlength: 50,
+                                    minlength: loginMin,
+                                    maxlength: loginMax,
                                     email: true
                                 },
                                 fpassnew: {
                                     required: true,
-                                    minlength: 5,
-                                    maxlength: 35,
+                                    minlength: passMin,
+                                    maxlength: passMax,
                                     regex: regexAlphanumeric
                                 },
                                 fpassnewconf: {
                                     required: true,
-                                    minlength: 5,
-                                    maxlength: 35,
+                                    minlength: passMin,
+                                    maxlength: passMax,
                                     regex: regexAlphanumeric,
                                     equalTo: "#fpassnew"
                                 }
