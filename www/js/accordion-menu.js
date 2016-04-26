@@ -10,7 +10,7 @@ AccordionMenu.prototype = function () {
         accCacheName = 'accordionCache',
         accHeightStyle = 'content',
         defaultTabIndex = 1,
-        ajaxTimeoutMs = 10000,
+        ajaxTimeoutMs = 25000,
         templateFile = 'templates/nav.html',
 
         init = function () {

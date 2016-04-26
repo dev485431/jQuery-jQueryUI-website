@@ -8,7 +8,7 @@ SearchAutoComplete.prototype = function () {
 
         apiUrl = 'mocks/search.json.php',
         apiVariable = 'titles',
-        ajaxTimeoutMs = 10000,
+        ajaxTimeoutMs = 25000,
         acCacheName = 'autoCompleteCache',
         cssUIAutoComplete = 'ui-autocomplete',
         cssUIAutoCompleteItem = 'ui-autocomplete-item',

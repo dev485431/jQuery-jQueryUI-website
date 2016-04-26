@@ -6,6 +6,9 @@ $(function () {
     var loginBox = new LoginBox();
     loginBox.init();
 
+    var quoteService = new QuoteService();
+    quoteService.init();
+
     //Event-based init
     $('#search_term').one('focus', function () {
         var searchAutoComplete = new SearchAutoComplete();
