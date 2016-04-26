@@ -9,7 +9,6 @@ $(function () {
     var quoteService = new QuoteService();
     quoteService.init();
 
-    //Event-based init
     $('#search_term').one('focus', function () {
         var searchAutoComplete = new SearchAutoComplete();
         searchAutoComplete.init();
