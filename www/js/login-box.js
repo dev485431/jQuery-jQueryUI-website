@@ -16,20 +16,10 @@ LoginBox.prototype = function () {
 
 
         init = function () {
-            if (isLoggedIn) {
+            if (isLoggedIn()) {
                 setLoginText(textLoggedIn + $.sessionStorage.get(loggedInEmail));
             } else {
-                loginLink.on('click', function () {
-                    initDialogBox();
-                });
-            }
-        },
-
-        hard = function () {
-            if (isLoggedIn) {
-                setLoginText(textLoggedIn + $.sessionStorage.get(loggedInEmail));
-            } else {
-                loginLink.on('click', function () {
+                loginLink.click(function () {
                     initDialogBox();
                 });
             }
@@ -126,7 +116,7 @@ LoginBox.prototype = function () {
         };
 
     return {
-        init: initDialogBox
+        init: init
     };
 
 }();
