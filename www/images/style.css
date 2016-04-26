@@ -398,3 +398,7 @@ div.centered {
 .error {
     color: red;
 }
+
+.greeting {
+    color: green;
+}

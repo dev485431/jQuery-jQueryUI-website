@@ -3,29 +3,49 @@ var LoginBox = function () {
 
 LoginBox.prototype = function () {
 
-    var loginDiv = $('#login-box'),
+    var loginText = $('#hlogin > p'),
+        loginLink = $('#login-link'),
+        dialogDiv = $('#login-box'),
+        loggedInFlag = 'loggedInFlag',
+        loggedInEmail = 'loggedInEmail',
         templateFile = 'templates/login/login-register-overlay.html',
-        boxPosition = {my: "center top+80", at: "center top", of: window},
+        dialogPosition = {my: "center-50 top+80", at: "center top", of: window},
+        textLoggedIn = 'You are logged in as ',
+        textRegistered = 'Thanks for the registration. You are logged in as ',
+        classGreeting = 'greeting',
 
 
         init = function () {
+            if (isLoggedIn) {
+                setLoginText(textLoggedIn + $.sessionStorage.get(loggedInEmail));
+            } else {
+                loginLink.on('click', function () {
+                    initDialogBox();
+                });
+            }
+        },
+
+        hard = function () {
+            if (isLoggedIn) {
+                setLoginText(textLoggedIn + $.sessionStorage.get(loggedInEmail));
+            } else {
+                loginLink.on('click', function () {
+                    initDialogBox();
+                });
+            }
+        },
+
+        initDialogBox = function () {
 
             loadTemplateFromFile(templateFile)
                 .done(function (templateData) {
-                    loginDiv.html(templateData);
-                    loginDiv.dialog({
-                        position: boxPosition
+                    dialogDiv.html(templateData);
+                    dialogDiv.dialog({
+                        position: dialogPosition
                     });
 
-                    // sprobowac:
-                    // $('#login-form').validate({
-                    //  submitHandler: function() { alert("Submitted!") }
-                    // }});
-
                     $(document).on('focus submit', '#login-form', function (event) {
-                        event.preventDefault();
-                        var loginForm = $(this);
-                        loginForm.validate({
+                        $(this).validate({
                             rules: {
                                 flogin: {
                                     required: true,
@@ -37,32 +57,43 @@ LoginBox.prototype = function () {
                                     minlength: 5
                                 }
                             },
-                            errorElement: 'div'
+                            errorElement: 'div',
+                            submitHandler: function (form) {
+                                logIn(form.elements['flogin'].value);
+                                dialogDiv.dialog('close');
+                                return false;
+                            }
                         });
                     });
 
                     $(document).on('focus submit', '#register-form', function (event) {
-                        event.preventDefault();
-                        var registerForm = $(this);
-                        registerForm.validate({
+                        $(this).validate({
                             rules: {
                                 femail: {
                                     required: true,
                                     minlength: 3,
                                     email: true
                                 },
-                                floginnew: {
+                                fpassnew: {
                                     required: true,
                                     minlength: 5
+                                },
+                                fpassnewconf: {
+                                    required: true,
+                                    minlength: 5,
+                                    equalTo: "#fpassnew"
                                 }
                             },
-                            errorElement: 'div'
+                            errorElement: 'div',
+                            submitHandler: function (form) {
+                                register(form.elements['femail'].value);
+                                dialogDiv.dialog('close');
+                                return false;
+                            }
                         });
 
                     });
                 });
-
-
         },
 
         loadTemplateFromFile = function (path) {
@@ -72,11 +103,30 @@ LoginBox.prototype = function () {
                 dataType: 'text',
                 cache: false
             });
+        },
+
+        logIn = function (email) {
+            $.sessionStorage.set(loggedInFlag, true);
+            $.sessionStorage.set(loggedInEmail, email);
+            setLoginText(textLoggedIn + email);
+        },
+
+        register = function (email) {
+            $.sessionStorage.set(loggedInFlag, true);
+            $.sessionStorage.set(loggedInEmail, email);
+            setLoginText(textRegistered + email);
+        },
+
+        isLoggedIn = function () {
+            return $.sessionStorage.get(loggedInFlag) ? true : false;
+        },
+
+        setLoginText = function (text) {
+            loginText.text(text).addClass(classGreeting);
         };
 
-
     return {
-        init: init
+        init: initDialogBox
     };
 
 }();
