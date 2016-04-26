@@ -3,21 +3,21 @@ var LoginBox = function () {
 
 LoginBox.prototype = function () {
 
-    var loginText = $('#hlogin > p'),
-        loginLink = $('#login-link'),
+    var loginLink = $('#login-link'),
+        loginDiv = $('#hlogin'),
         dialogDiv = $('#login-box'),
         loggedInFlag = 'loggedInFlag',
         loggedInEmail = 'loggedInEmail',
-        templateFile = 'templates/login/login-register-overlay.html',
+        templateOverlay = 'templates/login/login-register-overlay.html',
+        templateInlay = 'templates/login/greet-register-inlay.html',
         dialogPosition = {my: "center-50 top+80", at: "center top", of: window},
         textLoggedIn = 'You are logged in as ',
         textRegistered = 'Thanks for the registration. You are logged in as ',
-        classGreeting = 'greeting',
 
 
         init = function () {
             if (isLoggedIn()) {
-                setLoginText(textLoggedIn + $.sessionStorage.get(loggedInEmail));
+                renderLoginText(loginDiv, textLoggedIn + $.sessionStorage.get(loggedInEmail));
             } else {
                 loginLink.click(function () {
                     initDialogBox();
@@ -27,7 +27,7 @@ LoginBox.prototype = function () {
 
         initDialogBox = function () {
 
-            loadTemplateFromFile(templateFile)
+            loadTemplateFromFile(templateOverlay)
                 .done(function (templateData) {
                     dialogDiv.html(templateData);
                     dialogDiv.dialog({
@@ -98,21 +98,27 @@ LoginBox.prototype = function () {
         logIn = function (email) {
             $.sessionStorage.set(loggedInFlag, true);
             $.sessionStorage.set(loggedInEmail, email);
-            setLoginText(textLoggedIn + email);
+            renderLoginText(loginDiv, textLoggedIn + email);
         },
 
         register = function (email) {
             $.sessionStorage.set(loggedInFlag, true);
             $.sessionStorage.set(loggedInEmail, email);
-            setLoginText(textRegistered + email);
+            renderLoginText(loginDiv, textRegistered + email);
         },
 
         isLoggedIn = function () {
             return $.sessionStorage.get(loggedInFlag) ? true : false;
         },
 
-        setLoginText = function (text) {
-            loginText.text(text).addClass(classGreeting);
+        renderLoginText = function (selector, message) {
+            loadTemplateFromFile(templateInlay)
+                .done(function (templateData) {
+                    $.templates({'InlayTemplate': templateData});
+                    selector.html(
+                        $.render.InlayTemplate({message: message})
+                    );
+                });
         };
 
     return {

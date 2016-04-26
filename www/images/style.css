@@ -255,12 +255,12 @@ form.search {
 
 #inlaygreet {
     height: 45px;
-    border: 1px solid #B5C9EE;
     position: relative;
 }
 
 #inlaygreet p {
     padding: 17px 0 0 10px;
+    color: green;
 }
 
 #closeme {
@@ -397,8 +397,4 @@ div.centered {
 
 .error {
     color: red;
-}
-
-.greeting {
-    color: green;
 }
