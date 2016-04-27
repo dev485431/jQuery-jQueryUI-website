@@ -1,5 +1,8 @@
 // initialization of element of the website
 $(function () {
+    var newsPagination = new NewsPagination();
+    newsPagination.init();
+
     var accordionMenu = new AccordionMenu();
     accordionMenu.init();
 
