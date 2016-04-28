@@ -5,7 +5,7 @@ QuoteService.prototype = function () {
 
     var quoteSpan = $('#lovelyquote'),
         quoteLoader = $('#quote-loader'),
-        quotesUrl = 'http://quote-service.local/api.phps',
+        quotesUrl = 'http://quote-service.local/api.php',
         defaultQuote = 'There may be no "I" in team, but there\'s a "ME" if you look hard enough. - David Brent',
         callbackParam = 'callback',
         timeout = 5000,
