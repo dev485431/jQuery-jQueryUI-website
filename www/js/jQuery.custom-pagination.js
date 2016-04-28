@@ -1,4 +1,5 @@
 (function ($) {
+    "use strict";
 
     //initial setup and binding of elements
     $.fn.customPagination = function (itemTemplate, itemsArray, options) {
@@ -9,35 +10,41 @@
             return timeConverter(val);
         });
 
-        var customPagination = new CustomPagination(this, itemTemplate, itemsArray, settings);
-        customPagination.renderPagination();
+        CustomPagination.init(this, itemTemplate, itemsArray, settings);
+        CustomPagination.renderPagination();
+        CustomPagination.addNavigationListeners();
         return this;
     };
 
 
-    var CustomPagination = function (element, itemTemplate, itemsArray, settings) {
-        this.element = element;
-        this.itemTemplate = itemTemplate;
-        this.itemsArray = itemsArray;
-        this.settings = settings;
-        this.currentPage = 1;
-    }
+    var CustomPagination = function () {
+        var element,
+            itemTemplate,
+            itemsArray,
+            settings,
+            currentPage = 1,
 
-    CustomPagination.prototype = function () {
+            init = function (_element, _itemTemplate, _itemsArray, _settings) {
+                element = _element,
+                    itemTemplate = _itemTemplate,
+                    itemsArray = _itemsArray,
+                    settings = _settings;
+            },
 
-        var previousPage = function () {
-                this.currentPage--;
-                renderPagination.call(this);
+            previousPage = function () {
+                currentPage -= 1;
+                renderPagination();
+                console.log(currentPage);
             },
 
             nextPage = function () {
-                this.currentPage++;
-                renderPagination.call(this);
+                currentPage += 1;
+                renderPagination();
+                console.log(currentPage);
             },
 
             renderPagination = function () {
-                this.element.html(renderItems.call(this, (getPageData.call(this))));
-                addNavigationListeners();
+                element.html(renderItems(getPageData()));
             },
 
             renderItems = function (pageData) {
@@ -45,24 +52,24 @@
                 for (var i = 0; i < pageData.length; i++) {
                     html += $.render.itemTemplate(pageData[i]);
                 }
-                html += renderNavigation.call(this);
+                html += renderNavigation();
                 return html;
             },
 
             getPageData = function () {
 
-                var itemsMaxIndex = this.itemsArray.length - 1,
-                    lastItem = this.settings.itemsPerPage * this.currentPage - 1,
-                    firstItem = this.settings.itemsPerPage * this.currentPage - this.settings.itemsPerPage,
+                var itemsMaxIndex = itemsArray.length - 1,
+                    lastItem = settings.itemsPerPage * currentPage - 1,
+                    firstItem = settings.itemsPerPage * currentPage - settings.itemsPerPage,
                     pageData = [];
 
                 if (lastItem <= itemsMaxIndex) {
                     for (var i = firstItem; i <= lastItem; i++) {
-                        pageData.push(this.itemsArray[i]);
+                        pageData.push(itemsArray[i]);
                     }
                 } else {
                     for (var i = firstItem; i <= itemsMaxIndex; i++) {
-                        pageData.push(this.itemsArray[i]);
+                        pageData.push(itemsArray[i]);
                     }
                 }
                 return pageData;
@@ -72,22 +79,26 @@
                 // render html from it?
                 var nav = '<div id="pagination">' +
                     '<div id="prev"><button>Prev</button></div>' +
-                    '<div id="pagenum"><span>Page ' + this.currentPage + '</span></div>' +
+                    '<div id="pagenum"><span>Page ' + currentPage + '</span></div>' +
                     '<div id="next"><button>Next</button></div></div>';
                 return nav;
             },
 
             addNavigationListeners = function () {
                 $(document).on('click', '#prev > button', function (event) {
-                    alert('back');
+                    // alert('back');
+                    previousPage();
                 });
                 $(document).on('click', '#next > button', function (event) {
-                    alert('next');
+                    // alert('next');
+                    nextPage();
                 });
             };
 
         return {
-            renderPagination: renderPagination
+            init: init,
+            renderPagination: renderPagination,
+            addNavigationListeners: addNavigationListeners
         };
     }();
 
