@@ -26,6 +26,7 @@
             currentPage = 1,
             minPage = 1,
             maxPage,
+            fadeInMs = 900,
 
             init = function (_element, _itemTemplate, _itemsData, _settings) {
                 element = _element,
@@ -58,7 +59,7 @@
             },
 
             renderPagination = function () {
-                element.hide().html(renderItems(getPageData())).fadeIn();
+                element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
             },
 
             renderItems = function (pageData) {
