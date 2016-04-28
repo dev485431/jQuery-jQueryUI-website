@@ -10,7 +10,8 @@
         });
 
         var customPagination = new CustomPagination(this, itemTemplate, itemsArray, settings);
-        return customPagination.renderPagination();
+        customPagination.renderPagination();
+        return this;
     };
 
 
@@ -34,12 +35,9 @@
                 renderPagination.call(this);
             },
 
-        // setCurrentPage = function (page) {
-        //     this.currentPage = page;
-        // },
-
             renderPagination = function () {
                 this.element.html(renderItems.call(this, (getPageData.call(this))));
+                addNavigationListeners();
             },
 
             renderItems = function (pageData) {
@@ -77,6 +75,15 @@
                     '<div id="pagenum"><span>Page ' + this.currentPage + '</span></div>' +
                     '<div id="next"><button>Next</button></div></div>';
                 return nav;
+            },
+
+            addNavigationListeners = function () {
+                $(document).on('click', '#prev > button', function (event) {
+                    alert('back');
+                });
+                $(document).on('click', '#next > button', function (event) {
+                    alert('next');
+                });
             };
 
         return {
