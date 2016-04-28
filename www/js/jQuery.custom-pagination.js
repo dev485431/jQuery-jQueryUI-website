@@ -32,13 +32,13 @@
             },
 
             previousPage = function () {
-                currentPage -= 1;
+                currentPage--;
                 renderPagination();
                 console.log(currentPage);
             },
 
             nextPage = function () {
-                currentPage += 1;
+                currentPage++;
                 renderPagination();
                 console.log(currentPage);
             },
