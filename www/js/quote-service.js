@@ -9,6 +9,7 @@ QuoteService.prototype = function () {
         defaultQuote = 'There may be no "I" in team, but there\'s a "ME" if you look hard enough. - David Brent',
         callbackParam = 'callback',
         timeout = 5000,
+        fadeInMs = 500,
 
         init = function () {
             quoteLoader.show();
@@ -34,7 +35,7 @@ QuoteService.prototype = function () {
         },
 
         insertQuote = function (selector, quote) {
-            selector.html(quote);
+            selector.hide().html(quote).fadeIn(fadeInMs);
         };
 
     return {
