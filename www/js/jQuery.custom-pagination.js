@@ -3,7 +3,7 @@
 (function ($) {
     "use strict";
 
-    $.fn.customPagination = function (itemTemplate, itemsArray, options) {
+    $.fn.customPagination = function (itemTemplate, itemsData, options) {
         var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
 
         $.templates({'itemTemplate': itemTemplate});
@@ -11,7 +11,7 @@
             return timeConverter(val);
         });
 
-        CustomPagination.init(this, itemTemplate, itemsArray, settings);
+        CustomPagination.init(this, itemTemplate, itemsData, settings);
         CustomPagination.renderPagination();
         CustomPagination.addNavigationListeners();
         return this;
@@ -21,27 +21,32 @@
     var CustomPagination = function () {
         var element,
             itemTemplate,
-            itemsArray,
+            itemsData,
             settings,
             currentPage = 1,
+            minPage = 1,
+            maxPage,
 
-            init = function (_element, _itemTemplate, _itemsArray, _settings) {
+            init = function (_element, _itemTemplate, _itemsData, _settings) {
                 element = _element,
                     itemTemplate = _itemTemplate,
-                    itemsArray = _itemsArray,
-                    settings = _settings;
+                    itemsData = _itemsData,
+                    settings = _settings,
+                    maxPage = itemsData.length / settings.itemsPerPage;
             },
 
             previousPage = function () {
-                currentPage--;
-                renderPagination();
-                console.log(currentPage);
+                if (currentPage > minPage) {
+                    currentPage--;
+                    renderPagination();
+                }
             },
 
             nextPage = function () {
-                currentPage++;
-                renderPagination();
-                console.log(currentPage);
+                if (currentPage < maxPage) {
+                    currentPage++;
+                    renderPagination();
+                }
             },
 
             renderPagination = function () {
@@ -59,18 +64,18 @@
 
             getPageData = function () {
 
-                var itemsMaxIndex = itemsArray.length - 1,
+                var itemsMaxIndex = itemsData.length - 1,
                     lastItem = settings.itemsPerPage * currentPage - 1,
                     firstItem = settings.itemsPerPage * currentPage - settings.itemsPerPage,
                     pageData = [];
 
                 if (lastItem <= itemsMaxIndex) {
                     for (var i = firstItem; i <= lastItem; i++) {
-                        pageData.push(itemsArray[i]);
+                        pageData.push(itemsData[i]);
                     }
                 } else {
                     for (var i = firstItem; i <= itemsMaxIndex; i++) {
-                        pageData.push(itemsArray[i]);
+                        pageData.push(itemsData[i]);
                     }
                 }
                 return pageData;
