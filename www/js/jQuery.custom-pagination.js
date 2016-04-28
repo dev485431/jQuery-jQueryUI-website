@@ -24,7 +24,7 @@
             for (var i = 0; i < pageData.length; i++) {
                 html += $.render.itemTemplate(pageData[i]);
             }
-            // here also append nav
+            // here also append nav to html
 
             return html;
 
@@ -33,6 +33,7 @@
         renderNavigation = function (currentPage) {
             // action listeners "on"
             // get current page and generate back,forward accordingly
+
         },
 
         getPageData = function (itemsArray, pageNumber) {
@@ -62,8 +63,8 @@
 
         },
 
-        timeConverter = function (UNIX_timestamp) {
-            var a = new Date(UNIX_timestamp * 1000);
+        timeConverter = function (UNIXtimestamp) {
+            var a = new Date(UNIXtimestamp * 1000);
             var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var year = a.getFullYear();
             var month = months[a.getMonth()];
