@@ -44,7 +44,7 @@
             },
 
             renderPagination = function () {
-                element.html(renderItems(getPageData()));
+                return element.html(renderItems(getPageData()));
             },
 
             renderItems = function (pageData) {
