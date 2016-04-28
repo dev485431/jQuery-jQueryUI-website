@@ -32,32 +32,31 @@
                     itemTemplate = _itemTemplate,
                     itemsData = _itemsData,
                     settings = _settings,
-                    maxPage = itemsData.length / settings.itemsPerPage;
-                console.log(itemsData.length);
-                console.log(settings.itemsPerPage);
-                console.log(Math.ceil(maxPage));
+                    maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+
+                console.log(maxPage);
             },
 
             previousPage = function () {
-                if (isPreviousPageInLowerRange()) {
+                if (previousPageExist()) {
                     currentPage--;
                     renderPagination();
                 }
             },
 
             nextPage = function () {
-                if (isNextPageInUpperRange()) {
+                if (nextPageExist()) {
                     currentPage++;
                     renderPagination();
                 }
             },
 
-            isPreviousPageInLowerRange = function () {
+            previousPageExist = function () {
                 return currentPage - 1 >= minPage ? true : false;
             },
 
-            isNextPageInUpperRange = function () {
-                return currentPage + 1 <= Math.ceil(maxPage) ? true : false;
+            nextPageExist = function () {
+                return currentPage + 1 <= maxPage ? true : false;
             },
 
             renderPagination = function () {
@@ -95,9 +94,10 @@
             renderNavigation = function () {
                 // render html from it?
                 var nav = '<div id="pagination">' +
-                    '<div id="prev"><button>Prev</button></div>' +
+                    '<div id="prev"><button' + (previousPageExist() ? '' : " disabled")
+                    + '>Prev</button></div>' +
                     '<div id="pagenum"><span>Page ' + currentPage + '</span></div>' +
-                    '<div id="next"><button>Next</button></div></div>';
+                    '<div id="next"><button' + (nextPageExist() ? '' : " disabled") + '>Next</button></div></div>';
                 return nav;
             },
 
