@@ -35,52 +35,13 @@
         <div id="left">
 
             <div id="newsbox">
-                <h1>New posts</h1>
-                <div id="newsitem">
-                    <h2><a href="#">Lorem Ipsum</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt
-                        ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci
-                        tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
-                        iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
-                        feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent
-                        lupt...</p>
-                    <p class="date">
-                        <span id="author">Posted by: <i>John Doe</i></span>
-				<span>
-				    <img src="images/more.gif" alt=""/> <a href="#">Read more</a>
-				</span>
-				<span>
-				    <img src="images/comment.gif" alt=""/> <a href="#">Comments(7)</a>
-				</span>
-				<span>
-				    <img src="images/timeicon.gif" alt=""/> 10th Jan, 2006
-				</span>
-
-                    </p>
+                <div id="news-loader" class="hidden centered">
+                    <img src='images/ajax-loader-small.gif'/>
                 </div>
 
+                <div id="news-section"></div>
 
-                <h2><a href="#">Lorem Ipsum</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                    laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                    ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
-                    dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla
-                    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent lupt...</p>
-                <p class="date"><img src="images/more.gif" alt=""/> <a href="#">Read more</a> <img
-                        src="images/comment.gif" alt=""/> <a href="#">Comments(12)</a> <img src="images/timeicon.gif"
-                                                                                            alt=""/> 29th Dec, 2005</p>
-
-                <h2><a href="#">Lorem Ipsum</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                    laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                    ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
-                    dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla
-                    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent lupt...</p>
-                <p class="date"><img src="images/more.gif" alt=""/> <a href="#">Read more</a> <img
-                        src="images/comment.gif" alt=""/> <a href="#">Comments(34)</a> <img src="images/timeicon.gif"
-                                                                                            alt=""/> 24th Dec, 2005</p>
-
-                <div id="pagination">
+                <div id="pagination" class="hidden">
                     <div id="prev">
                         <button>Prev</button>
                     </div>
@@ -137,7 +98,10 @@
 </div>
 
 <div id="additional">
-    <p><b>Lovely Quote: </b><span id="lovelyquote">There may be no 'I' in team, but there's a 'ME' if you look hard enough. - David Brent</span>
+    <p><b>Lovely Quote: </b><span id="lovelyquote"></span>
+    <span id="quote-loader" class="hidden">
+        <img src='images/ajax-loader-small.gif'/>
+    </span>
     </p>
 </div>
 
