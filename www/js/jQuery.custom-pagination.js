@@ -1,7 +1,8 @@
+// Requires JsRender for rendering news template
+
 (function ($) {
     "use strict";
 
-    //initial setup and binding of elements
     $.fn.customPagination = function (itemTemplate, itemsArray, options) {
         var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
 
@@ -86,11 +87,9 @@
 
             addNavigationListeners = function () {
                 $(document).on('click', '#prev > button', function (event) {
-                    // alert('back');
                     previousPage();
                 });
                 $(document).on('click', '#next > button', function (event) {
-                    // alert('next');
                     nextPage();
                 });
             };
