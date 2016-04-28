@@ -58,7 +58,7 @@
             },
 
             renderPagination = function () {
-                element.html(renderItems(getPageData()));
+                element.hide().html(renderItems(getPageData())).fadeIn();
             },
 
             renderItems = function (pageData) {
