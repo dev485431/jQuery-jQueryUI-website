@@ -36,17 +36,25 @@
             },
 
             previousPage = function () {
-                if (currentPage > minPage) {
+                if (isCurrentPageAboveMin()) {
                     currentPage--;
                     renderPagination();
                 }
             },
 
             nextPage = function () {
-                if (currentPage < maxPage) {
+                if (isCurrentPageBelowMax()) {
                     currentPage++;
                     renderPagination();
                 }
+            },
+
+            isCurrentPageAboveMin = function () {
+                return currentPage > minPage ? true : false;
+            },
+
+            isCurrentPageBelowMax = function () {
+                return currentPage < maxPage ? true : false;
             },
 
             renderPagination = function () {
