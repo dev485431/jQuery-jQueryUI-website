@@ -117,8 +117,8 @@
         };
     }();
 
-    var timeConverter = function (UNIXtimestamp) {
-        var a = new Date(UNIXtimestamp * 1000);
+    var timeConverter = function (unixTimestamp) {
+        var a = new Date(unixTimestamp * 1000);
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var year = a.getFullYear();
         var month = months[a.getMonth()];
