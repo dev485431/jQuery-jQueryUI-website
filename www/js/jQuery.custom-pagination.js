@@ -33,28 +33,31 @@
                     itemsData = _itemsData,
                     settings = _settings,
                     maxPage = itemsData.length / settings.itemsPerPage;
+                console.log(itemsData.length);
+                console.log(settings.itemsPerPage);
+                console.log(Math.ceil(maxPage));
             },
 
             previousPage = function () {
-                if (isCurrentPageAboveMin()) {
+                if (isPreviousPageInLowerRange()) {
                     currentPage--;
                     renderPagination();
                 }
             },
 
             nextPage = function () {
-                if (isCurrentPageBelowMax()) {
+                if (isNextPageInUpperRange()) {
                     currentPage++;
                     renderPagination();
                 }
             },
 
-            isCurrentPageAboveMin = function () {
-                return currentPage > minPage ? true : false;
+            isPreviousPageInLowerRange = function () {
+                return currentPage - 1 >= minPage ? true : false;
             },
 
-            isCurrentPageBelowMax = function () {
-                return currentPage < maxPage ? true : false;
+            isNextPageInUpperRange = function () {
+                return currentPage + 1 <= Math.ceil(maxPage) ? true : false;
             },
 
             renderPagination = function () {
