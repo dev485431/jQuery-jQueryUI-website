@@ -33,29 +33,27 @@
                     itemsData = _itemsData,
                     settings = _settings,
                     maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
-
-                console.log(maxPage);
             },
 
             previousPage = function () {
-                if (previousPageExist()) {
+                if (previousPageExists()) {
                     currentPage--;
                     renderPagination();
                 }
             },
 
             nextPage = function () {
-                if (nextPageExist()) {
+                if (nextPageExists()) {
                     currentPage++;
                     renderPagination();
                 }
             },
 
-            previousPageExist = function () {
+            previousPageExists = function () {
                 return currentPage - 1 >= minPage ? true : false;
             },
 
-            nextPageExist = function () {
+            nextPageExists = function () {
                 return currentPage + 1 <= maxPage ? true : false;
             },
 
@@ -94,10 +92,10 @@
             renderNavigation = function () {
                 // render html from it?
                 var nav = '<div id="pagination">' +
-                    '<div id="prev"><button' + (previousPageExist() ? '' : " disabled")
+                    '<div id="prev"><button' + (previousPageExists() ? '' : " disabled")
                     + '>Prev</button></div>' +
                     '<div id="pagenum"><span>Page ' + currentPage + '</span></div>' +
-                    '<div id="next"><button' + (nextPageExist() ? '' : " disabled") + '>Next</button></div></div>';
+                    '<div id="next"><button' + (nextPageExists() ? '' : " disabled") + '>Next</button></div></div>';
                 return nav;
             },
 
