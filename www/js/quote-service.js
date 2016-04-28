@@ -5,15 +5,19 @@ QuoteService.prototype = function () {
 
     var quoteSpan = $('#lovelyquote'),
         quoteLoader = $('#quote-loader'),
-        quotesUrl = 'http://quote-service.local/api.php',
+        quotesUrl = 'http://quote-service.local/api.phps',
+        defaultQuote = 'There may be no "I" in team, but there\'s a "ME" if you look hard enough. - David Brent',
         callbackParam = 'callback',
-        timeout = 25000,
+        timeout = 5000,
 
         init = function () {
             quoteLoader.show();
             getJson()
                 .done(function (data) {
                     insertQuote(quoteSpan, data.text + ' - ' + data.author);
+                })
+                .fail(function () {
+                    quoteSpan.text(defaultQuote);
                 })
                 .always(function () {
                     quoteLoader.hide();

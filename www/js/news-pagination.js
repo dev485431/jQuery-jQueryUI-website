@@ -7,11 +7,13 @@ NewsPagination.prototype = function () {
         paginationDiv = $('#pagination'),
         newsApiUrl = 'mocks/news-list.json.php',
         newsTemplate = 'templates/news-item.html',
+        msgNoNews = 'Currently, there are no news.',
         apiVariable = 'stories',
         timeout = 25000,
         options = {
             itemsPerPage: 7
         },
+
 
         init = function () {
 
@@ -21,10 +23,13 @@ NewsPagination.prototype = function () {
                     getApiContent()
                         .done(function (apiData) {
                             newsDiv.customPagination(newsTemplate, apiData[apiVariable], options);
+                            paginationDiv.show();
+                        })
+                        .fail(function () {
+                            newsDiv.text(msgNoNews).addClass('centered');
                         })
                         .always(function () {
                             loaderDiv.hide();
-                            paginationDiv.show();
                         });
                 });
         },
