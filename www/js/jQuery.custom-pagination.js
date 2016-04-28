@@ -90,12 +90,13 @@
             },
 
             renderNavigation = function () {
-                // render html from it?
+                var prevEnable = previousPageExists() ? '' : " disabled",
+                    nextEnable = nextPageExists() ? '' : " disabled";
+
                 var nav = '<div id="pagination">' +
-                    '<div id="prev"><button' + (previousPageExists() ? '' : " disabled")
-                    + '>Prev</button></div>' +
+                    '<div id="prev"><button' + prevEnable + '>Prev</button></div>' +
                     '<div id="pagenum"><span>Page ' + currentPage + '</span></div>' +
-                    '<div id="next"><button' + (nextPageExists() ? '' : " disabled") + '>Next</button></div></div>';
+                    '<div id="next"><button' + nextEnable + '>Next</button></div></div>';
                 return nav;
             },
 
