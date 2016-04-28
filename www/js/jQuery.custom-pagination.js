@@ -1,65 +1,78 @@
 (function ($) {
 
-    var settings,
-        currentPage = 1;
-
     //initial setup and binding of elements
     $.fn.customPagination = function (itemTemplate, itemsArray, options) {
-        settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
+        var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
 
         $.templates({'itemTemplate': itemTemplate});
         $.views.converters("newsdate", function (val) {
             return timeConverter(val);
         });
-        // save, read, set current page
-        return renderPagination(this, itemsArray, currentPage);
+
+        var customPagination = new CustomPagination(this, itemTemplate, itemsArray, settings);
+        customPagination.renderPagination();
+        return this;
     };
 
-    var renderPagination = function (element, itemsArray, currentPage) {
-            element.html(renderNewsHtml(getPageData(itemsArray, currentPage)));
-        },
 
-        renderNewsHtml = function (pageData) {
-            var html = '';
-            for (var i = 0; i < pageData.length; i++) {
-                html += $.render.itemTemplate(pageData[i]);
-            }
-            // here also append nav to html
+    var CustomPagination = function (element, itemTemplate, itemsArray, settings) {
+            this.element = element;
+            this.itemTemplate = itemTemplate;
+            this.itemsArray = itemsArray;
+            this.settings = settings;
+            this.currentPage = 1;
 
-            return html;
 
-        },
+            this.previousPage = function () {
+                this.currentPage--;
+                this.renderPagination();
+            };
 
-        renderNavigation = function (currentPage) {
-            // action listeners "on"
-            // get current page and generate back,forward accordingly
+            this.nextPage = function () {
+                this.currentPage++;
+                this.renderPagination();
+            };
 
-        },
+            this.renderPagination = function () {
+                this.element.html(this.renderNews(this.getPageData()));
+            };
 
-        getPageData = function (itemsArray, pageNumber) {
-
-            var itemsIndex = itemsArray.length - 1,
-                lastItem = settings.itemsPerPage * pageNumber - 1,
-                firstItem = settings.itemsPerPage * pageNumber - settings.itemsPerPage,
-                newsDataPerPage = [];
-
-            if (lastItem <= itemsIndex) {
-                for (var i = firstItem; i <= lastItem; i++) {
-                    newsDataPerPage.push(itemsArray[i]);
+            this.renderNews = function (pageData) {
+                var html = '';
+                for (var i = 0; i < pageData.length; i++) {
+                    html += $.render.itemTemplate(pageData[i]);
                 }
-            } else {
-                for (var i = firstItem; i <= itemsIndex; i++) {
-                    newsDataPerPage.push(itemsArray[i]);
+                html += this.renderNavigation();
+                return html;
+            };
+
+            this.getPageData = function () {
+
+                var itemsMaxIndex = this.itemsArray.length - 1,
+                    lastItem = this.settings.itemsPerPage * this.currentPage - 1,
+                    firstItem = this.settings.itemsPerPage * this.currentPage - this.settings.itemsPerPage,
+                    pageData = [];
+
+                if (lastItem <= itemsMaxIndex) {
+                    for (var i = firstItem; i <= lastItem; i++) {
+                        pageData.push(this.itemsArray[i]);
+                    }
+                } else {
+                    for (var i = firstItem; i <= itemsMaxIndex; i++) {
+                        pageData.push(this.itemsArray[i]);
+                    }
                 }
-            }
-            return newsDataPerPage;
-        },
+                return pageData;
+            };
 
-        nextPage = function () {
-
-        },
-
-        previousPage = function () {
+            this.renderNavigation = function () {
+                // render html from it?
+                var nav = '<div id="pagination">' +
+                    '<div id="prev"><button>Prev</button></div>' +
+                    '<div id="pagenum"><span>Page ' + this.currentPage + '</span></div>' +
+                    '<div id="next"><button>Next</button></div></div>';
+                return nav;
+            };
 
         },
 
