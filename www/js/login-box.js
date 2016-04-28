@@ -6,6 +6,8 @@ LoginBox.prototype = function () {
     var loginLink = $('#login-link'),
         loginDiv = $('#hlogin'),
         dialogDiv = $('#login-box'),
+        loginForm = '#login-form',
+        registerForm = '#register-form',
         loggedInFlag = 'loggedInFlag',
         loggedInEmail = 'loggedInEmail',
         templateOverlay = 'templates/login/login-register-overlay.html',
@@ -42,7 +44,7 @@ LoginBox.prototype = function () {
                         position: dialogPosition
                     });
 
-                    $(document).on('focus submit', '#login-form', function (event) {
+                    $(document).on('focus submit', loginForm, function (event) {
                         $(this).validate({
                             rules: {
                                 flogin: {
@@ -67,7 +69,7 @@ LoginBox.prototype = function () {
                         });
                     });
 
-                    $(document).on('focus submit', '#register-form', function (event) {
+                    $(document).on('focus submit', registerForm, function (event) {
                         $(this).validate({
                             rules: {
                                 femail: {
