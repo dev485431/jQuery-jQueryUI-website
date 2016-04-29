@@ -1,7 +1,6 @@
 // Requires JsRender for rendering news template
 
 (function ($) {
-    "use strict";
 
     $.fn.customPagination = function (itemTemplate, itemsData, options) {
         var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
@@ -23,17 +22,20 @@
             itemTemplate,
             itemsData,
             settings,
-            currentPage = 1,
+            currentPage,
             minPage = 1,
             maxPage,
             fadeInMs = 900,
+            currentPageNoCache = 'currentPage',
 
             init = function (_element, _itemTemplate, _itemsData, _settings) {
                 element = _element,
                     itemTemplate = _itemTemplate,
                     itemsData = _itemsData,
                     settings = _settings,
-                    maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+                    currentPage = readPageNo() || 1,
+                    maxPage = Math.ceil(itemsData.length / settings.itemsPerPage),
+                    console.log('Current starting: ' + currentPage + ' Max: ' + maxPage);
             },
 
             previousPage = function () {
@@ -60,6 +62,7 @@
 
             renderPagination = function () {
                 element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
+                savePageNo(currentPage);
             },
 
             renderItems = function (pageData) {
@@ -108,6 +111,15 @@
                 $(document).on('click', '#next > button', function (event) {
                     nextPage();
                 });
+            },
+
+            savePageNo = function (pageNo) {
+                sessionStorage.setItem(currentPageNoCache, pageNo);
+            },
+
+            readPageNo = function () {
+                var savedPageNo = sessionStorage.getItem(currentPageNoCache);
+                return savedPageNo ? parseInt(savedPageNo) : null;
             };
 
         return {
