@@ -44,10 +44,10 @@
                     nextPage();
                 });
                 $(window).on('hashchange', function () {
-                    if (currentPage != readPageNo()) {
-                        currentPage = readPageNo();
-                        renderPagination();
-                    }
+                    // if (readPageNo() != currentPage) {
+                    currentPage = readPageNo();
+                    renderPagination();
+                    // }
                 });
             },
 
