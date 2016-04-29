@@ -22,33 +22,59 @@
             itemTemplate,
             itemsData,
             settings,
-            currentPage,
+            currentPage = 1,
             minPage = 1,
             maxPage,
             fadeInMs = 900,
-            currentPageNoCache = 'currentPage',
 
             init = function (_element, _itemTemplate, _itemsData, _settings) {
                 element = _element,
                     itemTemplate = _itemTemplate,
                     itemsData = _itemsData,
                     settings = _settings,
-                    currentPage = readPageNo() || 1,
-                    maxPage = Math.ceil(itemsData.length / settings.itemsPerPage),
-                    console.log('Current starting: ' + currentPage + ' Max: ' + maxPage);
+                    currentPage = readPageNo()
+                maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+            },
+
+            addNavigationListeners = function () {
+                $(document).on('click', '#prev > button', function (event) {
+                    previousPage();
+                });
+                $(document).on('click', '#next > button', function (event) {
+                    nextPage();
+                });
+                $(window).on('hashchange', function () {
+                    if (currentPage != readPageNo()) {
+                        currentPage = readPageNo();
+                        renderPagination();
+                    }
+                });
+            },
+
+            appendPageNo = function (pageNo) {
+                window.location.hash = pageNo;
+            },
+
+            readPageNo = function () {
+                var savedPageNo = parseInt(window.location.hash.substring(1));
+                return savedPageNo ? savedPageNo : currentPage;
+            },
+
+            renderPagination = function () {
+                element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
             },
 
             previousPage = function () {
                 if (previousPageExists()) {
                     currentPage--;
-                    renderPagination();
+                    appendPageNo(currentPage);
                 }
             },
 
             nextPage = function () {
                 if (nextPageExists()) {
                     currentPage++;
-                    renderPagination();
+                    appendPageNo(currentPage);
                 }
             },
 
@@ -58,11 +84,6 @@
 
             nextPageExists = function () {
                 return currentPage + 1 <= maxPage ? true : false;
-            },
-
-            renderPagination = function () {
-                element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
-                savePageNo(currentPage);
             },
 
             renderItems = function (pageData) {
@@ -102,24 +123,6 @@
                     '<div id="pagenum"><span>Page ' + currentPage + '</span></div>' +
                     '<div id="next"><button' + nextDisable + '>Next</button></div></div>';
                 return nav;
-            },
-
-            addNavigationListeners = function () {
-                $(document).on('click', '#prev > button', function (event) {
-                    previousPage();
-                });
-                $(document).on('click', '#next > button', function (event) {
-                    nextPage();
-                });
-            },
-
-            savePageNo = function (pageNo) {
-                sessionStorage.setItem(currentPageNoCache, pageNo);
-            },
-
-            readPageNo = function () {
-                var savedPageNo = sessionStorage.getItem(currentPageNoCache);
-                return savedPageNo ? parseInt(savedPageNo) : null;
             };
 
         return {
