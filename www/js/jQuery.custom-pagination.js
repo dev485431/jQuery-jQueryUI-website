@@ -32,8 +32,8 @@
                     itemTemplate = _itemTemplate,
                     itemsData = _itemsData,
                     settings = _settings,
-                    currentPage = readPageNo()
-                maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+                    currentPage = readPageNo(),
+                    maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
             },
 
             addNavigationListeners = function () {
