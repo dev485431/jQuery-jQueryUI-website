@@ -54,7 +54,7 @@
             },
 
             readPageNo = function () {
-                return parseInt(window.location.hash.substring(1)) || minPage;
+                return parseInt(window.location.hash.substring(1)) || currentPage;
             },
 
             renderPagination = function () {
