@@ -29,10 +29,14 @@
                 itemTemplate = _itemTemplate;
                 itemsData = _itemsData;
                 settings = _settings;
-                currentPage = readPageNo();
                 maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+                currentPage = validatePageNum(getCurrentPageNum());
                 renderPagination();
                 addNavigationListeners();
+            },
+
+            renderPagination = function () {
+                element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
             },
 
             addNavigationListeners = function () {
@@ -43,34 +47,35 @@
                     nextPage();
                 });
                 $(window).on('hashchange', function () {
-                    currentPage = readPageNo();
+                    currentPage = validatePageNum(getCurrentPageNum());
                     renderPagination();
                 });
             },
 
-            appendPageNo = function (pageNo) {
-                window.location.hash = pageNo;
+            getCurrentPageNum = function () {
+                return window.location.hash.substring(1);
             },
 
-            readPageNo = function () {
-                return parseInt(window.location.hash.substring(1)) || minPage;
+            validatePageNum = function (pageNum) {
+                var tempPageNum = parseInt(pageNum);
+                return tempPageNum && isPageNumInScope(tempPageNum) ? tempPageNum : minPage;
             },
 
-            renderPagination = function () {
-                element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
+            appendPageNum = function (pageNum) {
+                window.location.hash = pageNum;
             },
 
             previousPage = function () {
                 if (previousPageExists()) {
                     currentPage--;
-                    appendPageNo(currentPage);
+                    appendPageNum(currentPage);
                 }
             },
 
             nextPage = function () {
                 if (nextPageExists()) {
                     currentPage++;
-                    appendPageNo(currentPage);
+                    appendPageNum(currentPage);
                 }
             },
 
@@ -80,6 +85,10 @@
 
             nextPageExists = function () {
                 return currentPage + 1 <= maxPage ? true : false;
+            },
+
+            isPageNumInScope = function (pageNum) {
+                return pageNum >= minPage && pageNum <= maxPage;
             },
 
             renderItems = function (pageData) {
