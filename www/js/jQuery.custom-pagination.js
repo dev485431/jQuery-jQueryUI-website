@@ -44,10 +44,8 @@
                     nextPage();
                 });
                 $(window).on('hashchange', function () {
-                    // if (readPageNo() != currentPage) {
                     currentPage = readPageNo();
                     renderPagination();
-                    // }
                 });
             },
 
@@ -133,15 +131,15 @@
     }();
 
     var timeConverter = function (unixTimestamp) {
-        var a = new Date(unixTimestamp * 1000);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var year = a.getFullYear();
-        var month = months[a.getMonth()];
-        var day = a.getDate();
-        var hour = a.getHours();
-        var min = a.getMinutes();
-        var sec = a.getSeconds();
-        var time = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+        var d = new Date(unixTimestamp * 1000);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            year = d.getFullYear(),
+            month = months[d.getMonth()],
+            day = d.getDate(),
+            hour = d.getHours(),
+            min = d.getMinutes(),
+            sec = d.getSeconds(),
+            time = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
         return time;
     };
 

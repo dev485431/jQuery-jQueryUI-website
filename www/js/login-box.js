@@ -29,7 +29,8 @@ LoginBox.prototype = function () {
             if (isLoggedIn()) {
                 renderLoginText(loginDiv, textLoggedIn + $.sessionStorage.get(loggedInEmail));
             } else {
-                loginLink.click(function () {
+                loginLink.click(function (event) {
+                    event.preventDefault();
                     initDialogBox();
                 });
             }
