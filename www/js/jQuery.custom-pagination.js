@@ -54,8 +54,7 @@
             },
 
             readPageNo = function () {
-                var savedPageNo = parseInt(window.location.hash.substring(1));
-                return savedPageNo ? savedPageNo : currentPage;
+                return parseInt(window.location.hash.substring(1)) || minPage;
             },
 
             renderPagination = function () {
