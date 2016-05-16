@@ -284,21 +284,21 @@ form.search {
     float: left;
 }
 
-#pagination {
+#custom-pagination {
     height: 25px;
     margin-bottom: 14px;
     text-align: center;
 }
 
-#pagination #prev {
+#custom-pagination #pagination-prev {
     float: left;
 }
 
-#pagination #pagenum {
+#custom-pagination #pagination-pagenum {
     display: inline;
 }
 
-#pagination #next {
+#custom-pagination #pagination-next {
     float: right;
 }
 

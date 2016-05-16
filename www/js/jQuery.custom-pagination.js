@@ -3,16 +3,13 @@
 (function ($) {
 
     $.fn.customPagination = function (itemTemplate, itemsData, options) {
-        var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
-
         $.templates({'itemTemplate': itemTemplate});
         $.views.converters("newsdate", function (val) {
             return timeConverter(val);
         });
 
+        var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
         CustomPagination.init(this, itemTemplate, itemsData, settings);
-        CustomPagination.renderPagination();
-        CustomPagination.addNavigationListeners();
         return this;
     };
 
@@ -28,19 +25,21 @@
             fadeInMs = 900,
 
             init = function (_element, _itemTemplate, _itemsData, _settings) {
-                element = _element,
-                    itemTemplate = _itemTemplate,
-                    itemsData = _itemsData,
-                    settings = _settings,
-                    currentPage = readPageNo(),
-                    maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+                element = _element;
+                itemTemplate = _itemTemplate;
+                itemsData = _itemsData;
+                settings = _settings;
+                currentPage = readPageNo();
+                maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
+                renderPagination();
+                addNavigationListeners();
             },
 
             addNavigationListeners = function () {
-                $(document).on('click', '#prev > button', function () {
+                $(document).on('click', '#pagination-prev > button', function () {
                     previousPage();
                 });
-                $(document).on('click', '#next > button', function () {
+                $(document).on('click', '#pagination-next > button', function () {
                     nextPage();
                 });
                 $(window).on('hashchange', function () {
@@ -114,17 +113,15 @@
                 var prevDisable = previousPageExists() ? '' : " disabled",
                     nextDisable = nextPageExists() ? '' : " disabled";
 
-                var nav = '<div id="pagination">' +
-                    '<div id="prev"><button' + prevDisable + '>Prev</button></div>' +
-                    '<div id="pagenum"><span>Page ' + currentPage + '</span></div>' +
-                    '<div id="next"><button' + nextDisable + '>Next</button></div></div>';
+                var nav = '<div id="custom-pagination">' +
+                    '<div id="pagination-prev"><button' + prevDisable + '>Prev</button></div>' +
+                    '<div id="pagination-pagenum"><span>Page ' + currentPage + '</span></div>' +
+                    '<div id="pagination-next"><button' + nextDisable + '>Next</button></div></div>';
                 return nav;
             };
 
         return {
-            init: init,
-            renderPagination: renderPagination,
-            addNavigationListeners: addNavigationListeners
+            init: init
         };
     }();
 
