@@ -83,11 +83,11 @@
             },
 
             previousPageExists = function () {
-                return currentPage - 1 >= minPage ? true : false;
+                return currentPage - 1 >= minPage;
             },
 
             nextPageExists = function () {
-                return currentPage + 1 <= maxPage ? true : false;
+                return currentPage + 1 <= maxPage;
             },
 
             renderItems = function (pageData) {
@@ -103,14 +103,15 @@
                 var itemsMaxIndex = itemsData.length - 1,
                     lastItem = settings.itemsPerPage * currentPage - 1,
                     firstItem = settings.itemsPerPage * currentPage - settings.itemsPerPage,
-                    pageData = [];
+                    pageData = [],
+                    i;
 
                 if (lastItem <= itemsMaxIndex) {
-                    for (var i = firstItem; i <= lastItem; i++) {
+                    for (i = firstItem; i <= lastItem; i++) {
                         pageData.push(itemsData[i]);
                     }
                 } else {
-                    for (var i = firstItem; i <= itemsMaxIndex; i++) {
+                    for (i = firstItem; i <= itemsMaxIndex; i++) {
                         pageData.push(itemsData[i]);
                     }
                 }
@@ -121,11 +122,10 @@
                 var prevDisable = previousPageExists() ? '' : " disabled",
                     nextDisable = nextPageExists() ? '' : " disabled";
 
-                var nav = '<div id="custom-pagination">' +
+                return '<div id="custom-pagination">' +
                     '<div id="pagination-prev"><button' + prevDisable + '>Prev</button></div>' +
                     '<div id="pagination-pagenum"><span>Page ' + currentPage + '</span></div>' +
                     '<div id="pagination-next"><button' + nextDisable + '>Next</button></div></div>';
-                return nav;
             };
 
         return {
@@ -141,9 +141,8 @@
             day = d.getDate(),
             hour = d.getHours(),
             min = d.getMinutes(),
-            sec = d.getSeconds(),
-            time = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-        return time;
+            sec = d.getSeconds();
+        return day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
     };
 
     $.fn.customPagination.defaultSettings = {
