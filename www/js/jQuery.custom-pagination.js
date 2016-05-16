@@ -37,10 +37,10 @@
             },
 
             addNavigationListeners = function () {
-                $(document).on('click', '#prev > button', function (event) {
+                $(document).on('click', '#prev > button', function () {
                     previousPage();
                 });
-                $(document).on('click', '#next > button', function (event) {
+                $(document).on('click', '#next > button', function () {
                     nextPage();
                 });
                 $(window).on('hashchange', function () {
@@ -54,7 +54,7 @@
             },
 
             readPageNo = function () {
-                return parseInt(window.location.hash.substring(1)) || currentPage;
+                return parseInt(window.location.hash.substring(1)) || minPage;
             },
 
             renderPagination = function () {
@@ -93,7 +93,6 @@
             },
 
             getPageData = function () {
-
                 var itemsMaxIndex = itemsData.length - 1,
                     lastItem = settings.itemsPerPage * currentPage - 1,
                     firstItem = settings.itemsPerPage * currentPage - settings.itemsPerPage,
