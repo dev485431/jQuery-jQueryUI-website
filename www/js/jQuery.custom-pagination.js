@@ -31,14 +31,14 @@
                 maxPage = Math.ceil(itemsData.length / settings.itemsPerPage);
                 currentPage = validatePageNum(getCurrentPageNum());
                 renderPagination();
-                addNavigationListeners();
+                addNavListeners();
             },
 
             renderPagination = function () {
                 element.hide().html(renderItems(getPageData())).fadeIn(fadeInMs);
             },
 
-            addNavigationListeners = function () {
+            addNavListeners = function () {
                 $(document).on('click', '#pagination-prev > button', function () {
                     previousPage();
                 });
