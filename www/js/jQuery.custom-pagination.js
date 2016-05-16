@@ -13,7 +13,6 @@
         return this;
     };
 
-
     var CustomPagination = function () {
         var element,
             itemTemplate,
@@ -52,13 +51,17 @@
                 });
             },
 
+            validatePageNum = function (pageNum) {
+                var tempPageNum = parseInt(pageNum);
+                return tempPageNum && isPageNumInScope(tempPageNum) ? tempPageNum : minPage;
+            },
+
             getCurrentPageNum = function () {
                 return window.location.hash.substring(1);
             },
 
-            validatePageNum = function (pageNum) {
-                var tempPageNum = parseInt(pageNum);
-                return tempPageNum && isPageNumInScope(tempPageNum) ? tempPageNum : minPage;
+            isPageNumInScope = function (pageNum) {
+                return pageNum >= minPage && pageNum <= maxPage;
             },
 
             appendPageNum = function (pageNum) {
@@ -85,10 +88,6 @@
 
             nextPageExists = function () {
                 return currentPage + 1 <= maxPage ? true : false;
-            },
-
-            isPageNumInScope = function (pageNum) {
-                return pageNum >= minPage && pageNum <= maxPage;
             },
 
             renderItems = function (pageData) {
