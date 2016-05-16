@@ -3,12 +3,13 @@
 (function ($) {
 
     $.fn.customPagination = function (itemTemplate, itemsData, options) {
+        var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
+
         $.templates({'itemTemplate': itemTemplate});
         $.views.converters("newsdate", function (val) {
-            return timeConverter(val);
+            return convertUnixTime(val, settings);
         });
 
-        var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
         CustomPagination.init(this, itemTemplate, itemsData, settings);
         return this;
     };
@@ -133,20 +134,28 @@
         };
     }();
 
-    var timeConverter = function (unixTimestamp) {
-        var d = new Date(unixTimestamp * 1000);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            year = d.getFullYear(),
-            month = months[d.getMonth()],
-            day = d.getDate(),
-            hour = d.getHours(),
-            min = d.getMinutes(),
-            sec = d.getSeconds();
-        return day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    var convertUnixTime = function (unixTime, settings) {
+        var d = new Date(unixTime * 1000),
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            timeData = {
+                year: d.getFullYear(),
+                month: months[d.getMonth()],
+                day: d.getDate(),
+                fullHour: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+            },
+            dateSettings = settings.unixDatesFormat,
+            formattedDate = '';
+
+        for (var i = 0; i < dateSettings.length; i++) {
+            formattedDate += timeData[dateSettings[i]];
+            formattedDate += ' ';
+        }
+        return formattedDate;
     };
 
     $.fn.customPagination.defaultSettings = {
-        itemsPerPage: 7
+        itemsPerPage: 7,
+        unixDatesFormat: ['day', 'month', 'year', 'fullHour']
     };
 
 }(jQuery));

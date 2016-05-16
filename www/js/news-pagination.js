@@ -10,7 +10,9 @@ NewsPagination.prototype = function () {
         apiVariable = 'stories',
         timeout = 25000,
         options = {
-            itemsPerPage: 7
+            itemsPerPage: 7,
+            // available variables (will be space-separated): year, month, day, fullHour
+            unixDatesFormat: ['day', 'month', 'year', 'fullHour']
         },
 
         init = function () {
