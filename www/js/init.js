@@ -1,6 +1,6 @@
 // initialization of element of the website
 $(function () {
-    "use strict";
+    'use strict';
 
     var newsPagination = new NewsPagination();
     newsPagination.init();

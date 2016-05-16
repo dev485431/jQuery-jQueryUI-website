@@ -1,5 +1,7 @@
+'use strict';
+
 var LoginBox = function () {
-}
+};
 
 LoginBox.prototype = function () {
 
@@ -45,7 +47,7 @@ LoginBox.prototype = function () {
                         position: dialogPosition
                     });
 
-                    $(document).on('focus submit', loginForm, function (event) {
+                    $(document).on('focus submit', loginForm, function () {
                         $(this).validate({
                             rules: {
                                 flogin: {
@@ -70,7 +72,7 @@ LoginBox.prototype = function () {
                         });
                     });
 
-                    $(document).on('focus submit', registerForm, function (event) {
+                    $(document).on('focus submit', registerForm, function () {
                         $(this).validate({
                             rules: {
                                 femail: {

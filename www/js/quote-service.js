@@ -1,5 +1,7 @@
+'use strict';
+
 var QuoteService = function () {
-}
+};
 
 QuoteService.prototype = function () {
 

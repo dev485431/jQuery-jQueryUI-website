@@ -1,5 +1,7 @@
+'use strict';
+
 var AccordionMenu = function () {
-}
+};
 
 AccordionMenu.prototype = function () {
 

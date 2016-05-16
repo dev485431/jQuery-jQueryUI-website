@@ -1,5 +1,7 @@
+'use strict';
+
 var SearchAutoComplete = function () {
-}
+};
 
 SearchAutoComplete.prototype = function () {
 

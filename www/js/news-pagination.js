@@ -1,5 +1,7 @@
+'use strict';
+
 var NewsPagination = function () {
-}
+};
 
 NewsPagination.prototype = function () {
     var newsDiv = $('#news-section'),

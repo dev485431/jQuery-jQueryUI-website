@@ -1,6 +1,7 @@
 // Requires JsRender for rendering news template
 
 (function ($) {
+    'use strict';
 
     $.fn.customPagination = function (itemTemplate, itemsData, options) {
         var settings = $.extend({}, $.fn.customPagination.defaultSettings, options);
