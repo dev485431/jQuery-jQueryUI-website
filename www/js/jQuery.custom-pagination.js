@@ -138,20 +138,20 @@
     var convertUnixTime = function (unixTime, settings) {
         var d = new Date(unixTime * 1000),
             months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            timeData = {
+            dateData = {
                 year: d.getFullYear(),
                 month: months[d.getMonth()],
                 day: d.getDate(),
                 fullHour: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
             },
             dateSettings = settings.unixDatesFormat,
-            formattedDate = '';
+            outputDate = '';
 
         for (var i = 0; i < dateSettings.length; i++) {
-            formattedDate += timeData[dateSettings[i]];
-            formattedDate += ' ';
+            outputDate += dateData[dateSettings[i]];
+            outputDate += ' ';
         }
-        return formattedDate;
+        return outputDate;
     };
 
     $.fn.customPagination.defaultSettings = {
