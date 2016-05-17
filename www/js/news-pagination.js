@@ -6,10 +6,11 @@ var NewsPagination = function () {
 NewsPagination.prototype = function () {
     var newsDiv = $('#news-section'),
         loaderDiv = $('#news-loader'),
-        newsApiUrl = 'mocks/news-list.json.php',
+        apiUrl = 'mocks/news-list.json.php',
         newsTemplate = 'templates/news-item.html',
         msgNoNews = 'Currently, there are no news.',
-        apiVariable = 'stories',
+        apiVar = 'stories',
+        newsCache = 'newsCache',
         timeout = 25000,
         options = {
             itemsPerPage: 7,
@@ -22,22 +23,29 @@ NewsPagination.prototype = function () {
             loaderDiv.show();
             loadTemplateFromFile(newsTemplate)
                 .done(function (newsTemplate) {
-                    getApiContent()
-                        .done(function (apiData) {
-                            newsDiv.customPagination(newsTemplate, apiData[apiVariable], options);
-                        })
-                        .fail(function () {
-                            newsDiv.text(msgNoNews).addClass('centered');
-                        })
-                        .always(function () {
-                            loaderDiv.hide();
-                        });
+                    var cache = sessionStorage.getItem(newsCache);
+                    if (cache) {
+                        newsDiv.customPagination(newsTemplate, JSON.parse(cache), options);
+                        loaderDiv.hide();
+                    } else {
+                        getApiContent()
+                            .done(function (apiData) {
+                                newsDiv.customPagination(newsTemplate, apiData[apiVar], options);
+                                sessionStorage.setItem(newsCache, JSON.stringify(apiData[apiVar]));
+                            })
+                            .fail(function () {
+                                newsDiv.text(msgNoNews).addClass('centered');
+                            })
+                            .always(function () {
+                                loaderDiv.hide();
+                            });
+                    }
                 });
         },
 
         getApiContent = function () {
             return $.ajax({
-                url: newsApiUrl,
+                url: apiUrl,
                 dataType: 'json',
                 timeout: timeout
             });
